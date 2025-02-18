@@ -25,7 +25,7 @@ This guide provides solutions to common problems you might encounter while setti
                 *   Is the `ip dhcp pool LAN-POOL` configured?
                 *   Is the `network 192.168.1.0 255.255.255.0` command present and correct? **(Crucial for defining the network)**
                 *   Is the `default-router 192.168.1.1` command present and correct? **(Crucial for gateway assignment)**
-                *   *(Optional, if you configured it)* Is the `dns-server 8.8.8.8` command present and correct?
+                *   Is the `dns-server 8.8.8.8` command present and correct?
             *   If any part of the DHCP configuration is missing or incorrect, reconfigure it as per the [Configuration Steps in README.md](README.md#1-router-r1-configuration-dhcp-server). Pay close attention to the `network` and `default-router` commands.
             *   **Save the Router Configuration:**  After making changes, remember to save the router configuration using `copy running-config startup-config` or `wr`.
 
