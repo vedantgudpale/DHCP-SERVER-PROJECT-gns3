@@ -6,28 +6,7 @@ This project demonstrates the configuration of a DHCP (Dynamic Host Configuratio
 
 This project is designed for beginners learning about DHCP and network configuration in GNS3. It provides a hands-on example of setting up a fundamental network service.
 
-## Topology Diagram
-
-
-   192.168.1.0/24 Network
-     (LAN - Blue Area)
-   +-------------------+
-   |                   |
-   |      Router R1    |  (DHCP Server)
-   |    (192.168.1.1)  |
-   |      f0/0         |------- e0
-   +-------------------+       |
-                               |
-                               |  e1    e2    e3    e4
-   +-------------------+-------+-----+-----+-----+-----+
-   |   Ethernet Switch |             |     |     |     |
-   |     Switch1       |             |     |     |     |
-   +-------------------+             |     |     |     |
-     e0      e0      e0      e0      |     |     |     |
-    VPCS1   VPCS2   VPCS3   VPCS4    |     |     |     |
-    (PC1)   (PC2)   (PC3)   (PC4)    +-----+-----+-----+
-
-
+## Topology
 
 **Devices Used:**
 
