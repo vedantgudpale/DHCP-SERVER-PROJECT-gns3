@@ -10,7 +10,7 @@ This project is designed for beginners learning about DHCP and network configura
 
 **Devices Used:**
 
-*   **Router:** Cisco Router (e.g., c3725, c3640, c2691 - model may vary depending on your GNS3 setup.  In the diagram it's simply labeled R1).
+*   **Router:** Cisco Router
 *   **Switch:** Ethernet Switch (Layer 2 Switch - labeled Switch1 in the diagram).
 *   **End Devices:** VPCS (Virtual PC Simulator) - 4 instances (PC1, PC2, PC3, PC4).
 
