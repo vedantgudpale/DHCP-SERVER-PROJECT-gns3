@@ -46,14 +46,14 @@ This project is designed for beginners learning about DHCP and network configura
     ```
     Router(config)# ip dhcp pool LAN-POOL
     Router(dhcp-config)# network 192.168.1.0 255.255.255.0
-    Router(dhcp-config)# range 192.168.1.10 192.168.1.100
+    Router(dhcp-config)# range 192.168.1.2 192.168.1.100
     Router(dhcp-config)# default-router 192.168.1.1
     Router(dhcp-config)# dns-server 8.8.8.8
     Router(dhcp-config)# exit
     ```
     *   `ip dhcp pool LAN-POOL`: Creates a DHCP pool named "LAN-POOL". This is just a name; you can choose another name if you prefer.
     *   `network 192.168.1.0 255.255.255.0`:  Defines the network address and subnet mask for the network segment where DHCP will be used. This should match the network of the router's interface (`192.168.1.0/24` in this case).
-    *   `range 192.168.1.10 192.168.1.100`: Specifies the range of IP addresses the DHCP server will assign to clients, from `192.168.1.10` to `192.168.1.100`.
+    *   `range 192.168.1.2 192.168.1.100`: Specifies the range of IP addresses the DHCP server will assign to clients, from `192.168.1.10` to `192.168.1.100`.
     *   `default-router 192.168.1.1`: Sets the default gateway address that the DHCP server will provide to clients. This should be the IP address of the router's interface on the LAN (`192.168.1.1`).
     *   `dns-server 8.8.8.8`: (Optional) Configures the DNS server IP address that DHCP clients will receive. We use Google Public DNS (`8.8.8.8`) here. You can use a different DNS server or remove this line if you don't want to specify a DNS server via DHCP.
     *   `exit`: Exits DHCP pool configuration mode and returns to global configuration mode.
