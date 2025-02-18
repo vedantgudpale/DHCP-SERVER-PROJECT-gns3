@@ -93,9 +93,6 @@ This guide provides solutions to common problems you might encounter while setti
             *   VPCS devices should be getting IP addresses in the `192.168.1.0/24` network (e.g., `192.168.1.x` with mask `255.255.255.0`).
         *   **Correct any IP address or subnet mask errors** in the router or DHCP pool configurations. Save router configuration and have VPCS devices renew their DHCP leases.
 
-4.  **Firewall or ACLs (Access Control Lists) - Not Applicable in Basic Project, but for future reference:**
-    *   **Note:** In this basic project, you haven't configured any firewalls or ACLs. However, in more advanced GNS3 projects, if you are using virtual firewalls or have configured ACLs on routers, these could potentially block traffic. If you suspect firewall or ACL issues in *future* projects, you would need to examine those configurations.
-
 ---
 
 ## Problem 3:  "VPCS Persistence Note" - Having to Run `ip dhcp` After Reopening Project
