@@ -24,7 +24,7 @@ This guide provides solutions to common problems you might encounter while setti
             *   **Carefully review the DHCP pool configuration:**
                 *   Is the `ip dhcp pool LAN-POOL` configured?
                 *   Is the `network 192.168.1.0 255.255.255.0` command present and correct?
-                *   Is the `range 192.168.1.10 192.168.1.100` command present and correct?
+                *   Is the `range 192.168.1.2 192.168.1.100` command present and correct?
                 *   Is the `default-router 192.168.1.1` command present and correct?
             *   If any part of the DHCP configuration is missing or incorrect, reconfigure it as per the [Configuration Steps in README.md](README.md#1-router-r1-configuration-dhcp-server).
             *   **Save the Router Configuration:**  After making changes, remember to save the router configuration using `copy running-config startup-config` or `wr`.
@@ -55,7 +55,7 @@ This guide provides solutions to common problems you might encounter while setti
 
 4.  **DHCP Pool Exhaustion (Unlikely in this Project, but possible in larger setups):**
     *   **Solution (If you've added many more devices):**
-        *   **Check DHCP Pool Range:** If you have added a very large number of VPCS devices or other DHCP clients, it's *theoretically* possible to exhaust the DHCP address range (`192.168.1.10 - 192.168.1.100`).
+        *   **Check DHCP Pool Range:** If you have added a very large number of VPCS devices or other DHCP clients, it's *theoretically* possible to exhaust the DHCP address range (`192.168.1.2 - 192.168.1.100`).
         *   **Increase DHCP Range:** If you suspect this, go to the Router R1 DHCP pool configuration and increase the `range` to include more IP addresses. For example, `range 192.168.1.10 192.168.1.200`.
 
 5.  **VPCS Network Settings Issue (Less Common):**
