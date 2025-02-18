@@ -86,7 +86,7 @@ After configuring the router as a DHCP server and issuing the `ip dhcp` command 
     *   **Open the console of each VPCS device (PC1, PC2, PC3, PC4) one by one.**
     *   **In each VPCS console, type `show ip` or simply `ip` and press Enter.**
     *   **Examine the output.** You should see the following information for each VPCS, indicating successful DHCP configuration:
-        *   **IP Address:**  The VPCS should have an IP address assigned within the DHCP range you configured on the router (`192.168.1.10` - `192.168.1.100`). For example, you might see `IP: 192.168.1.10`, `IP: 192.168.1.11`, etc.
+        *   **IP Address:**  The VPCS should have an IP address assigned within the DHCP range you configured on the router (`192.168.1.1` - `192.168.1.100`). For example, you might see `IP: 192.168.1.2`, `IP: 192.168.1.3`, etc.
         *   **Mask:** The Subnet Mask should be `255.255.255.0`.
         *   **Gateway:** The Gateway IP address should be `192.168.1.1`, which is the IP address of the router's interface.
         *   **DNS:** If you configured the `dns-server` option in the DHCP pool, you should see the DNS server IP address (e.g., `DNS: 8.8.8.8`).
@@ -116,7 +116,7 @@ After configuring the router as a DHCP server and issuing the `ip dhcp` command 
 
     *   **Ping Another VPCS Device:** Find the IP address of another VPCS device (e.g., PC2) using `show ip` in its console. Then, from PC1's console, ping PC2's IP address.
         ```
-        VPCS> ping <PC2's IP Address>  (e.g., ping 192.168.1.11)
+        VPCS> ping <PC2's IP Address>  (e.g., ping 192.168.1.3)
         ```
         Successful ping replies between VPCS devices confirm that they can communicate with each other within the LAN, indicating the switch is working and IP connectivity is established.
 
