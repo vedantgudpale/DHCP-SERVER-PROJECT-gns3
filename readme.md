@@ -87,7 +87,7 @@ After configuring the router as a DHCP server and issuing the `ip dhcp` command 
 
 ## Troubleshooting
 
-If you encounter any issues during setup or verification, please refer to the [Troubleshooting Guide](TROUBLESHOOTING.md) for common problems and solutions.
+If you encounter any issues during setup or verification, please refer to the [Troubleshooting Guide](Troubleshoot.md) for common problems and solutions.
 
 ## VPCS Persistence Note
 
