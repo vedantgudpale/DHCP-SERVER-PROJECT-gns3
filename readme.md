@@ -6,11 +6,12 @@ This project demonstrates the configuration of a DHCP (Dynamic Host Configuratio
 
 This project is designed for beginners learning about DHCP and network configuration in GNS3. It provides a hands-on example of setting up a fundamental network service.
 
-## Topology
+## Topology 
+
 
 **Devices Used:**
 
-*   **Router:** Cisco Router
+*   **Router:** Cisco Router (e.g., c3725, c3640, c2691 - model may vary depending on your GNS3 setup.  In the diagram it's simply labeled R1).
 *   **Switch:** Ethernet Switch (Layer 2 Switch - labeled Switch1 in the diagram).
 *   **End Devices:** VPCS (Virtual PC Simulator) - 4 instances (PC1, PC2, PC3, PC4).
 
@@ -39,7 +40,7 @@ This project is designed for beginners learning about DHCP and network configura
     Router(config-if)# exit
     ```
     *   `interface FastEthernet 0/0`:  Selects the FastEthernet 0/0 interface for configuration. Make sure this interface matches the one you connected to the switch in your GNS3 topology.
-    *   `ip address 192.168.1.1 255.255.255.0`: Assigns the static IP address `192.168.1.1` and subnet mask `255.255.255.0` to this interface. This will be the gateway address for devices on the LAN.
+    *   `ip address 192.168.1.1 255.255.255.0`: Assigns the static IP address `192.168.1.1` and subnet mask `255.255.255.0` to this interface. This will be the gateway address for the LAN and the IP address of the DHCP server on this network.
     *   `no shutdown`:  Activates the interface, bringing it up.
     *   `exit`:  Exits interface configuration mode and returns to global configuration mode.
 5.  **Configure DHCP Pool:**
@@ -51,8 +52,8 @@ This project is designed for beginners learning about DHCP and network configura
     Router(dhcp-config)# exit
     ```
     *   `ip dhcp pool LAN-POOL`: Creates a DHCP pool named "LAN-POOL". This is just a name; you can choose another name if you prefer.
-    *   `network 192.168.1.0 255.255.255.0`:  Defines the network address and subnet mask for the network segment where DHCP will be used. This should match the network of the router's interface (`192.168.1.0/24` in this case).
-    *   `default-router 192.168.1.1`: Sets the default gateway address that the DHCP server will provide to clients. This should be the IP address of the router's interface on the LAN (`192.168.1.1`).
+    *   `network 192.168.1.0 255.255.255.0`:  **Defines the network for DHCP address assignment.**  This command tells the DHCP server which network range to manage. It should match the network of the router's interface (`192.168.1.0/24` in this case).  IP addresses assigned to clients will be from this network.
+    *   `default-router 192.168.1.1`: Sets the default gateway address that the DHCP server will provide to clients. This is essential so that devices on the LAN know how to reach networks outside their local network. It's set to the router's interface IP address (`192.168.1.1`).
     *   `dns-server 8.8.8.8`: (Optional) Configures the DNS server IP address that DHCP clients will receive. We use Google Public DNS (`8.8.8.8`) here. You can use a different DNS server or remove this line if you don't want to specify a DNS server via DHCP.
     *   `exit`: Exits DHCP pool configuration mode and returns to global configuration mode.
 6.  **Exit Configuration Mode and Save Configuration:**
@@ -74,57 +75,23 @@ This project is designed for beginners learning about DHCP and network configura
     ```
     VPCS> ip dhcp
     ```
-    *   `ip dhcp`: This command instructs the VPCS device to send a DHCP request to obtain an IP address and other network configuration parameters from a DHCP server on the network.
+    *   `ip dhcp`: This command instructs the VPCS device to send a DHCP request to obtain an IP address and other network configuration parameters from the DHCP server on the network.
 
 ## Verification Steps: How to Check if DHCP is Working
 
-After configuring the router as a DHCP server and issuing the `ip dhcp` command on the VPCS devices, you need to verify that DHCP is working correctly. Here's how:
+After configuring the router as a DHCP server and issuing the `ip dhcp` command on the VPCS devices, you need to verify that DHCP is working correctly. Refer to the [Troubleshooting Guide](TROUBLESHOOTING.md) for detailed verification steps and troubleshooting if you encounter any issues.  The guide explains how to:
 
-1.  **Verify IP Address Configuration on VPCS Devices:**
-    *   **Open the console of each VPCS device (PC1, PC2, PC3, PC4) one by one.**
-    *   **In each VPCS console, type `show ip` or simply `ip` and press Enter.**
-    *   **Examine the output.** You should see the following information for each VPCS, indicating successful DHCP configuration:
-        *   **IP Address:**  The VPCS should have an IP address assigned within the DHCP range you configured on the router (`192.168.1.1` - `192.168.1.100`). For example, you might see `IP: 192.168.1.2`, `IP: 192.168.1.3`, etc.
-        *   **Mask:** The Subnet Mask should be `255.255.255.0`.
-        *   **Gateway:** The Gateway IP address should be `192.168.1.1`, which is the IP address of the router's interface.
-        *   **DNS:** If you configured the `dns-server` option in the DHCP pool, you should see the DNS server IP address (e.g., `DNS: 8.8.8.8`).
+1.  **Verify IP Address Configuration on VPCS Devices:** Check that each VPCS has received an IP address, subnet mask, gateway, and (optionally) DNS server information via DHCP using the `show ip` command in the VPCS consoles.
+2.  **Verify DHCP Bindings on Router R1 (DHCP Server Verification):** Use the `show ip dhcp binding` command on Router R1 to confirm that the router has assigned IP addresses to the VPCS devices.
+3.  **Test Network Connectivity with Ping:** Use the `ping` command from VPCS devices to test connectivity to the router (gateway) and to other VPCS devices on the LAN.
 
-    *   **If you see IP addresses, subnet mask, and gateway information in the VPCS output, it means the VPCS devices have successfully obtained IP configurations from the DHCP server.**
+## Troubleshooting
 
-2.  **Verify DHCP Bindings on Router R1 (DHCP Server Verification):**
-    *   **Access the Router R1 console.**
-    *   **Enter privileged EXEC mode:** `enable`
-    *   **Type the command:** `show ip dhcp binding` and press Enter.
-    *   **Examine the output.** This command displays a list of DHCP bindings. Each binding represents an IP address that the DHCP server has leased (assigned) to a client.
-    *   **You should see entries for each VPCS device (PC1, PC2, PC3, PC4).** Each entry will show:
-        *   The IP address assigned to the VPCS.
-        *   The MAC address of the VPCS device.
-        *   The lease expiration time (how long the IP address is leased for).
-        *   The client-identifier (usually the MAC address again).
-
-    *   **Seeing entries for your VPCS devices in the `show ip dhcp binding` output on the router confirms that the router's DHCP server has successfully assigned IP addresses to these clients.**
-
-3.  **Test Network Connectivity with Ping:**
-    *   **Open the console of any VPCS device (e.g., PC1).**
-    *   **Ping the Router's Interface (Gateway):** Type `ping 192.168.1.1` and press Enter.
-        ```
-        VPCS> ping 192.168.1.1
-        ```
-        You should see successful ping replies (indicated by `!!!!!` or similar). This confirms that the VPCS can reach its default gateway (the router).
-
-    *   **Ping Another VPCS Device:** Find the IP address of another VPCS device (e.g., PC2) using `show ip` in its console. Then, from PC1's console, ping PC2's IP address.
-        ```
-        VPCS> ping <PC2's IP Address>  (e.g., ping 192.168.1.3)
-        ```
-        Successful ping replies between VPCS devices confirm that they can communicate with each other within the LAN, indicating the switch is working and IP connectivity is established.
-
-    *   **Unsuccessful pings at any of these steps indicate a problem with your DHCP configuration or network setup. Double-check your router and VPCS configurations and the physical connections in GNS3.**
+If you encounter any issues during setup or verification, please refer to the [Troubleshooting Guide](TROUBLESHOOTING.md) for common problems and solutions.
 
 ## VPCS Persistence Note
 
-**Important:** VPCS (Virtual PC Simulator) in GNS3 is designed to be lightweight and resource-efficient. By default, VPCS does **not** save its configuration when you close and reopen a GNS3 project. This means that when you restart your GNS3 project, you will need to issue the `ip dhcp` command again in each VPCS console to get them to request and obtain new IP addresses.
-
-This behavior is intentional to keep VPCS simple and minimize resource usage. For basic DHCP learning and testing, this is usually acceptable. If you require persistent configurations for end devices in more advanced simulations, you might consider using full virtual machines running lightweight operating systems instead of VPCS, but VMs are more resource-intensive.
+**Important:** VPCS (Virtual PC Simulator) in GNS3 is designed to be lightweight and resource-efficient. By default, VPCS does **not** save its configuration when you close and reopen a GNS3 project. This means that when you restart your GNS3 project, you will need to issue the `ip dhcp` command again in each VPCS console to get them to request and obtain new IP addresses. This is normal behavior.
 
 ## GNS3 Project File
 
@@ -133,9 +100,9 @@ For easier setup and to replicate this project in GNS3, you can include the `.gn
 ## Further Exploration
 
 *   **Add more VPCS devices:** Connect more VPCS devices to the switch and observe them receiving DHCP addresses.
-*   **Experiment with DHCP Lease Time:** Configure the `lease` option in the DHCP pool on the router to control how long IP addresses are leased to clients.
-*   **DHCP Reservations:** Configure DHCP reservations to assign specific IP addresses to certain devices based on their MAC addresses.
-*   **DHCP Options:** Explore other DHCP options you can configure, such as setting different DNS servers, NTP servers, or other client configuration parameters.
+*   **Experiment with DHCP Lease Time:**  *(This would require adding the `lease` command to the DHCP pool configuration on the router - explore this advanced option if interested.)*
+*   **DHCP Reservations:** *(Explore configuring DHCP reservations to assign specific IP addresses to certain devices based on their MAC addresses - an intermediate to advanced DHCP topic.)*
+*   **DHCP Options:** *(Investigate other DHCP options you can configure, such as different DNS servers, NTP servers, or other client configuration parameters - more advanced DHCP configuration.)*
 
 ## Author
 
