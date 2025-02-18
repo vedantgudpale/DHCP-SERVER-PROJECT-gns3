@@ -93,9 +93,6 @@ If you encounter any issues during setup or verification, please refer to the [T
 
 **Important:** VPCS (Virtual PC Simulator) in GNS3 is designed to be lightweight and resource-efficient. By default, VPCS does **not** save its configuration when you close and reopen a GNS3 project. This means that when you restart your GNS3 project, you will need to issue the `ip dhcp` command again in each VPCS console to get them to request and obtain new IP addresses. This is normal behavior.
 
-## GNS3 Project File
-
-For easier setup and to replicate this project in GNS3, you can include the `.gns3project` file in this repository. This will allow others to simply open the project in their GNS3 environment and explore the configuration.
 
 ## Further Exploration
 
