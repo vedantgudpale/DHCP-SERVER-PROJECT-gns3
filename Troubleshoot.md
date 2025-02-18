@@ -23,10 +23,10 @@ This guide provides solutions to common problems you might encounter while setti
             *   Type `show running-config | section dhcp` and press Enter.
             *   **Carefully review the DHCP pool configuration:**
                 *   Is the `ip dhcp pool LAN-POOL` configured?
-                *   Is the `network 192.168.1.0 255.255.255.0` command present and correct?
-                *   Is the `range 192.168.1.2 192.168.1.100` command present and correct?
-                *   Is the `default-router 192.168.1.1` command present and correct?
-            *   If any part of the DHCP configuration is missing or incorrect, reconfigure it as per the [Configuration Steps in README.md](README.md#1-router-r1-configuration-dhcp-server).
+                *   Is the `network 192.168.1.0 255.255.255.0` command present and correct? **(Crucial for defining the network)**
+                *   Is the `default-router 192.168.1.1` command present and correct? **(Crucial for gateway assignment)**
+                *   *(Optional, if you configured it)* Is the `dns-server 8.8.8.8` command present and correct?
+            *   If any part of the DHCP configuration is missing or incorrect, reconfigure it as per the [Configuration Steps in README.md](README.md#1-router-r1-configuration-dhcp-server). Pay close attention to the `network` and `default-router` commands.
             *   **Save the Router Configuration:**  After making changes, remember to save the router configuration using `copy running-config startup-config` or `wr`.
 
 2.  **Router Interface (f0/0) is Not Configured or Down:**
@@ -53,10 +53,9 @@ This guide provides solutions to common problems you might encounter while setti
             *   **In GNS3, look at the connection lines.** They should be solid green lines when devices are started and interfaces are up. If they are dotted or broken, there might be a connection issue. Delete the link and recreate it if necessary.
         *   **Check Switch Status (Basic Check):** While less common for basic Ethernet switches in GNS3 to fail, ensure the "Switch1" device is also started in GNS3 (green triangle icon).
 
-4.  **DHCP Pool Exhaustion (Unlikely in this Project, but possible in larger setups):**
-    *   **Solution (If you've added many more devices):**
-        *   **Check DHCP Pool Range:** If you have added a very large number of VPCS devices or other DHCP clients, it's *theoretically* possible to exhaust the DHCP address range (`192.168.1.2 - 192.168.1.100`).
-        *   **Increase DHCP Range:** If you suspect this, go to the Router R1 DHCP pool configuration and increase the `range` to include more IP addresses. For example, `range 192.168.1.10 192.168.1.200`.
+4.  **DHCP Pool Network Mismatch:**
+    *   **Solution:**
+        *   **Ensure DHCP `network` Command Matches Router Interface Network:**  Double-check that the `network 192.168.1.0 255.255.255.0` command in your DHCP pool configuration on Router R1 **exactly matches** the network that the Router's `FastEthernet0/0` interface is part of (`192.168.1.0/24` in this project).  If there's a mismatch, DHCP might not work for devices on the intended LAN. Correct the `network` command in the DHCP pool configuration if needed and save the router configuration.
 
 5.  **VPCS Network Settings Issue (Less Common):**
     *   **Solution:**
@@ -106,7 +105,6 @@ This guide provides solutions to common problems you might encounter while setti
 *   **VPCS is Stateless by Design:** This is **normal and expected behavior** for VPCS (Virtual PC Simulator) in GNS3. VPCS is designed to be lightweight and resource-efficient. By default, it does not save its configuration across GNS3 project sessions.
 *   **Solution:**
     *   **Run `ip dhcp` Again:** The simplest solution is to just accept this behavior. After reopening your GNS3 project and starting the VPCS devices, simply run the `ip dhcp` command in each VPCS console. This is a quick and easy step to re-establish IP connectivity for your VPCS devices.
-    *   **For Persistent Configurations (Advanced Users):** If you need persistent configurations for end devices, consider using full virtual machines (VMs) running lightweight operating systems instead of VPCS. VMs can save their state and configurations, but they are more resource-intensive than VPCS.
 
 ---
 
